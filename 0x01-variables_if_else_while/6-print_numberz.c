@@ -7,14 +7,11 @@
  */
 int main(void)
 {
-	char ch = 'a';
-	int i = 0;
+	int i = 48;
 	/* your code goes there */
-	while (i < 26)
+	while (i < 58)
 	{
-		if (ch != 'q' &&  ch != 'e')
-			putchar(ch);
-		ch++;
+		putchar(i);
 		i++;
 	}
 	putchar('\n');

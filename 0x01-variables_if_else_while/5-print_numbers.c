@@ -7,13 +7,12 @@
  */
 int main(void)
 {
-	char ch = 'a';
+	char ch = '0';
 	int i = 0;
 	/* your code goes there */
-	while (i < 26)
+	while (i < 10)
 	{
-		if (ch != 'q' &&  ch != 'e')
-			putchar(ch);
+		putchar(ch);
 		ch++;
 		i++;
 	}
