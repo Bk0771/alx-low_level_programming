@@ -6,9 +6,10 @@
  * starting from 0, followed by a new line.
  * Return: 0
  */
-int main(void)	
+int main(void)
 {
 	int c = 0;
+	/* your code goes there */
 	while (c < 10)
 	{
 		putchar(48 + c);
@@ -22,3 +23,4 @@ int main(void)
 	putchar('\n');
 	return (0);
 }
+Footer
