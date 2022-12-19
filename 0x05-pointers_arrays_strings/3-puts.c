@@ -1,9 +1,9 @@
 #include "holberton.h"
 
 /**
- * _puts - prints a string, followed by a new line,
- * @str: pointer to the string to print
- * Return: void
+ * _puts - a function that prints a string
+ * @str: string input
+ * Return: string
  */
 
 void _puts(char *str)
