@@ -1,103 +1,70 @@
 #include "search_algos.h"
 
 /**
- * print_array - prints an array of integers
- * @array: pointer to the start of the array
- * @size: size of the array (number of elements)
- *
- * Return: nothing
- */
-void print_array(int *array, int size)
+  * _binary_search - Searches for a value in a sorted array
+  *                  of integers using binary search.
+  * @array: A pointer to the first element of the array to search.
+  * @left: The starting index of the [sub]array to search.
+  * @right: The ending index of the [sub]array to search.
+  * @value: The value to search for.
+  *
+  * Return: If the value is not present or the array is NULL, -1.
+  *         Otherwise, the index where the value is located.
+  *
+  * Description: Prints the [sub]array being searched after each change.
+  */
+int _binary_search(int *array, size_t left, size_t right, int value)
 {
-	int i;
+	size_t i;
 
-	if (array == NULL || size == 0)
-		return;
-
-	printf("Searching in array: ");
-
-	for (i = 0; i < size; i++)
-	{
-		if (i == 0)
-			printf("%d", array[i]);
-		else
-			printf(", %d", array[i]);
-	}
-
-	printf("\n");
-}
-
-/**
- * binary_search - find value in sorted array using binary search method
- * @array: pointer to first element in array to be searched
- * @size: size of the array (number of elements)
- * @value: value to be searched for
- *
- * Return: index position of value or -1 if not found or array is null
- */
-int binary_search(int *array, size_t size, int value)
-{
-	int low = 0;
-	int high = size - 1;
-	int mid;
-
-	if (array == NULL || size == 0)
+	if (array == NULL)
 		return (-1);
 
-	while (low <= high)
+	while (right >= left)
 	{
-		mid = low + (high - low) / 2;
+		printf("Searching in array: ");
+		for (i = left; i < right; i++)
+			printf("%d, ", array[i]);
+		printf("%d\n", array[i]);
 
-		print_array(&array[low], (high - low) + 1);
-
-		if (array[mid] == value)
-			return (mid);
-
-		if (array[mid] > value)
-			high = mid - 1;
-
+		i = left + (right - left) / 2;
+		if (array[i] == value)
+			return (i);
+		if (array[i] > value)
+			right = i - 1;
 		else
-			low = mid + 1;
+			left = i + 1;
 	}
 
 	return (-1);
 }
 
 /**
- * exponential_search - search for a value in a sorted array using exponential
- * search and binary search algorithms
- * @array: pointer to the array to be searched
- * @size: size of the array (number of elements)
- * @value: the value to be searched for
- *
- * Return: fist index value is found at or -1 if not present or array is null
- */
+  * exponential_search - Searches for a value in a sorted array
+  *                      of integers using exponential search.
+  * @array: A pointer to the first element of the array to search.
+  * @size: The number of elements in the array.
+  * @value: The value to search for.
+  *
+  * Return: If the value is not present or the array is NULL, -1.
+  *         Otherwise, the index where the value is located.
+  *
+  * Description: Prints a value every time it is compared in the array.
+  */
 int exponential_search(int *array, size_t size, int value)
 {
-	int lower_bound;
-	int upper_bound = 1;
-	int value_position;
+	size_t i = 0, right;
 
-	if (array == NULL || size == 0)
+	if (array == NULL)
 		return (-1);
 
-	while (upper_bound < (int)size && array[upper_bound] < value)
+	if (array[0] != value)
 	{
-		printf("Value checked array[%d] = [%d]\n", upper_bound, array[upper_bound]);
-		lower_bound = upper_bound;
-		upper_bound *= 2;
+		for (i = 1; i < size && array[i] <= value; i = i * 2)
+			printf("Value checked array[%ld] = [%d]\n", i, array[i]);
 	}
 
-	if (upper_bound >= (int)size)
-		upper_bound = size - 1;
-
-	printf("Value found between indexes [%d] and [%d]\n", lower_bound,
-	       upper_bound);
-	value_position = binary_search(&array[lower_bound],
-				       upper_bound - lower_bound + 1, value);
-
-	if (value_position != -1)
-		value_position += lower_bound;
-
-	return (value_position);
+	right = i < size ? i : size - 1;
+	printf("Value found between indexes [%ld] and [%ld]\n", i / 2, right);
+	return (_binary_search(array, i / 2, right, value));
 }
