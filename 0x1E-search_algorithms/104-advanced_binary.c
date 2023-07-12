@@ -1,78 +1,64 @@
 #include "search_algos.h"
 
 /**
- * print_array - prints an array of integers
- * @array: pointer to the start of the array
- * @size: size of the array (number of elements)
+ * rec_search - searches for a value in an array of
+ * integers using the Binary search algorithm
  *
- * Return: nothing
+ *
+ * @array: input array
+ * @size: size of the array
+ * @value: value to search in
+ * Return: index of the number
  */
-void print_array(int *array, int size)
+int rec_search(int *array, size_t size, int value)
 {
-	int i;
+	size_t half = size / 2;
+	size_t i;
 
 	if (array == NULL || size == 0)
-		return;
-
-	printf("Searching in array: ");
-
-	for (i = 0; i < size; i++)
-	{
-		if (i == 0)
-			printf("%d", array[i]);
-		else
-			printf(", %d", array[i]);
-	}
-
-	printf("\n");
-}
-
-/**
- * recursive_binary_search - searches for a value in a sorted array recursively
- * with binary search method
- * @array: pointer to array to be searched
- * @low: sub-array start point
- * @high: sub-array end point
- * @value: the value to be searched for
- *
- * Return: first index value found at or -1 if not present
- */
-int recursive_binary_search(int *array, int low, int high, int value)
-{
-	int mid;
-
-	if (low > high)
 		return (-1);
 
-	mid = (low + high) / 2;
+	printf("Searching in array");
 
-	print_array(&array[low], high - low + 1);
+	for (i = 0; i < size; i++)
+		printf("%s %d", (i == 0) ? ":" : ",", array[i]);
 
-	if (array[mid] == value)
+	printf("\n");
+
+	if (half && size % 2 == 0)
+		half--;
+
+	if (value == array[half])
 	{
-		if (array[mid - 1] != value)
-			return (mid);
+		if (half > 0)
+			return (rec_search(array, half + 1, value));
+		return ((int)half);
 	}
 
-	if (array[mid] < value)
-		return (recursive_binary_search(array, mid + 1, high, value));
-	else
-		return (recursive_binary_search(array, low, mid, value));
+	if (value < array[half])
+		return (rec_search(array, half + 1, value));
+
+	half++;
+	return (rec_search(array + half, size - half, value) + half);
 }
 
 /**
- * advanced_binary - implement binary search on sorted array ensuring value
- * found index is first index, using recursive approach
- * @array: the array to be searched
- * @size: size of the array (number of elements)
- * @value: value to be searched for
+ * advanced_binary - calls to rec_search to return
+ * the index of the number
  *
- * Return: first index value found at or -1 if not present or array is null
+ * @array: input array
+ * @size: size of the array
+ * @value: value to search in
+ * Return: index of the number
  */
 int advanced_binary(int *array, size_t size, int value)
 {
-	if (array == NULL || size == 0)
+	int index;
+
+	index = rec_search(array, size, value);
+
+	if (index >= 0 && array[index] != value)
 		return (-1);
 
-	return (recursive_binary_search(array, 0, size - 1, value));
+	return (index);
 }
