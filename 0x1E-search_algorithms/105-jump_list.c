@@ -1,51 +1,50 @@
-#include <math.h>
 #include "search_algos.h"
+#include <math.h>
 
 /**
- * jump_list - search a single linked list using the jump search method
- * @list: pointer to first node in linked list
- * @size: size of the list (number of nodes)
- * @value: value to be searched for
+ * jump_list - searches for a value in an array of
+ * integers using the Jump search algorithm
  *
- * Return: pointer to first node containing value or NULL if not present
- * or list is empty
+ * @list: input list
+ * @size: size of the array
+ * @value: value to search in
+ * Return: index of the number
  */
 listint_t *jump_list(listint_t *list, size_t size, int value)
 {
-	listint_t *hold = list;
-	int i, jump;
+	size_t index, k, m;
+	listint_t *prev;
 
 	if (list == NULL || size == 0)
 		return (NULL);
 
-	jump = sqrt(size);
+	m = (size_t)sqrt((double)size);
+	index = 0;
+	k = 0;
 
-	while (hold->next != NULL)
+	do {
+		prev = list;
+		k++;
+		index = k * m;
+
+		while (list->next && list->index < index)
+			list = list->next;
+
+		if (list->next == NULL && index != list->index)
+			index = list->index;
+
+		printf("Value checked at index [%d] = [%d]\n", (int)index, list->n);
+
+	} while (index < size && list->next && list->n < value);
+
+	printf("Value found between indexes ");
+	printf("[%d] and [%d]\n", (int)prev->index, (int)list->index);
+
+	for (; prev && prev->index <= list->index; prev = prev->next)
 	{
-		list = hold;
-
-		for (i = 0; i < jump; i++)
-		{
-			hold = hold->next;
-			if (hold->next == NULL)
-				break;
-		}
-
-		printf("Value checked at index [%lu] = [%d]\n", hold->index, hold->n);
-
-		if (hold->n >= value)
-			break;
-	}
-
-	printf("Value found between indexes [%lu] and [%lu]\n", list->index,
-	       hold->index);
-
-	while (list != NULL && list != hold->next)
-	{
-		printf("Value checked at index [%lu] = [%d]\n", list->index, list->n);
-		if (list->n == value)
-			return (list);
-		list = list->next;
+		printf("Value checked at index [%d] = [%d]\n", (int)prev->index, prev->n);
+		if (prev->n == value)
+			return (prev);
 	}
 
 	return (NULL);
